@@ -22,7 +22,9 @@ async def analyze_species(
     if not catalog:
         raise HTTPException(status_code=500, detail="Catalogo de especies vacio")
 
-    species = classifier.classify_by_filename(image.filename, catalog)
+    # Read image data
+    contents = await image.read()
+    species = await classifier.classify_image(contents, catalog)
     return InferenceResponse(
         common_name=species.common_name,
         scientific_name=species.scientific_name,

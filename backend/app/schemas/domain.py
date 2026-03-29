@@ -13,6 +13,8 @@ class ProvinceSummary(BaseModel):
     population: int
     birth_rate: float
     death_rate: float
+    last_sync_at: datetime | None = None
+    source_type: str = "manual"
 
 
 class RiskDetail(BaseModel):
@@ -27,6 +29,7 @@ class RiskDetail(BaseModel):
     source_url: str
     validation_status: str
     updated_at: datetime
+    source_type: str = "manual"
 
 
 class ProvinceDetail(ProvinceSummary):
@@ -44,3 +47,9 @@ class InferenceResponse(BaseModel):
     alert_message: str = Field(
         description="Mensaje de alerta si la especie representa peligro relevante."
     )
+
+
+class AdminSyncResponse(BaseModel):
+    status: str
+    synced_count: int | None = None
+    synced_records: int | None = None

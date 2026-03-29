@@ -31,6 +31,8 @@ class Province(Base):
     population: Mapped[int] = mapped_column(Integer)
     birth_rate: Mapped[float] = mapped_column(Float)
     death_rate: Mapped[float] = mapped_column(Float)
+    last_sync_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
+    source_type: Mapped[str] = mapped_column(String(20), default="manual")  # 'manual' or 'sync'
 
     risk_records: Mapped[list["RiskRecord"]] = relationship(back_populates="province")
 
@@ -61,6 +63,7 @@ class RiskRecord(Base):
     source_name: Mapped[str] = mapped_column(String(180))
     source_url: Mapped[str] = mapped_column(Text)
     validation_status: Mapped[str] = mapped_column(String(30), default="approved")
+    source_type: Mapped[str] = mapped_column(String(20), default="manual")  # 'manual' or 'sync'
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now()
     )
